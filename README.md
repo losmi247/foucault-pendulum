@@ -1,2 +1,1 @@
-# foucault-pendulum
 Animation (interactive?)
