@@ -1,1 +1,93 @@
+@import url('http://getbootstrap.com/dist/css/bootstrap.css');
+body{
+    font:16px/20px verdana, arial, helvetica, sans-serif;
+	  color:#333;
+	  background-color:white;
+	  margin: 20px;
+	  padding:0px;
+	  line-height: 20px;
+}
 
+h1 {
+  font-size: 30px;
+  font-weight: bold;
+	margin-left: 0px;
+	margin-top: 8px;
+  margin-bottom: 5px;
+	line-height: 30px;
+  text-align: center;
+}
+
+h2 {
+	font-size: 21px;
+	margin-left: 0px;
+	margin-top:25px;
+	line-height: 24px;
+  text-align: center;
+}
+
+h3{
+  font-size: 17px;
+	margin-left: 0px;
+	margin-top:0px;
+	line-height: 24px;
+  text-align: left;
+}
+
+div#wrapper {
+    margin-left:auto;
+    margin-right:auto; 
+    max-width:1000px;
+}
+
+table {
+    font:16px/20px verdana;
+	  color:#333;
+	  background-color:white;
+	  margin:2px;
+	  padding:2px;
+}
+
+caption {
+    text-align: center;
+    margin-bottom: 2px;
+    font: sans-serif;
+    font-size: 90%;
+    padding: 2px;
+    font-weight: bold;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th{
+  padding: 10px;
+  text-align: center;
+  width: 175px;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    width: 120px;
+}
+
+.center {
+    width: 500px;
+    text-align:center;
+}
+
+.button {
+    background-color: #00008B;
+    border: 2px solid red;
+    color: red;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
