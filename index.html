@@ -19,13 +19,105 @@ General Information
 </h2>
   
 <p> 
-Hi
+A Foucault pendulum consists of a mass \(m\) hanging from a cable of length \(l\), which is hooked to the ceiling in such a way that it allows the mass to move freely in any possible direction.
 </p>
+
+<p>
+
+<p>
+The frequency of oscillation of such a pendulum is, as usual, \( w_0 = \sqrt{\frac{g}{l}} \). However, due to the planet Earth's rotation around its axis at angular speed \( \omega_E \approx \frac{2\pi}{24h} \approx 7 \cdot 10^{-5} \frac{rad}{s} \), the plane in which the hanging mass oscillates is constantly rotating. The French physicist Léon Foucault proposed that the period of rotation of the plane of oscillation is related to the sine of the longitude of its location \(q\) in the following way: $$ T = \frac{24h}{\sin q}$$
+</p>
+
+<p>
+It can be shown that the pendulum's complicated motion is, irrespective of the mass \(m\), described by the following equation:
+</p>
+
+$$ u(t) = C_1 e^{\gamma_1 t} + C_2 e^{\gamma_2 t} $$
+
+<p>
+where \(u(t)\) is a complex number representing the current position of the mass, \(C_1\) and \(C_2\) are complex constants, and complex numbers \(\gamma_{1,2}\) are denoted by the following expression (we use \(\Omega = \omega_E \sin \phi\), where \(\phi\) is the latitude of the pendulums location):
+</p>
+
+$$ \gamma_{1,2} = i(-\Omega \pm \sqrt{\Omega^2 + w_0^2}) $$
+
+<h2>
+The Animation
+</h2>
+
+<p>
+The following table allows you to tune the values of \(C_1\) and \(C_2\) to get the desired pattern that the pendulum traces in the box below. For a complex number \(z \in \mathbf{C}\), values \(\Re(z)\) and \(\Im(z)\) denote its real and imaginary parts respectively. The initial conditions that follow from each choice of the two constants are displayed in the table below the ones for \(C_1\) and \(C_2\).
+</p>
+
+
+
+
+
+<table style="display: inline-block;">
+<caption>Value of \(C_1\)</caption>
+<tr>
+  <th>\( \Re(C_1) \) [px]</th>
+    <td>\(\Re(C_1) = \) <input type="number" id = "realc1"  name = "rec1" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
+</tr>
+<tr> 
+  <th>\( \Im(C_1) \) [px]</th>
+    <td>\(\Im(C_1) = \) <input type="number" id = "imaginaryc1"  name = "imc1" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
+</tr>
+</table>
+
+<table style="display: inline-block;">
+<caption>Value of \(C_2\)</caption>
+<tr>
+  <th>\( \Re(C_2) \) [px]</th>
+    <td>\(\Re(C_2) = \) <input type="number" id = "realc2"  name = "rec2" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
+</tr>
+<tr> 
+  <th>\( \Im(C_2) \) [px]</th>
+    <td>\(\Im(C_2) = \) <input type="number" id = "imaginaryc2"  name = "imc2" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
+</tr>
+</table>
+
+<table style="display: inline-block;">
+<caption>Initial conditions (\(x\) axis)</caption>
+<tr>
+  <th>Initial position \(x_0\) [px] </th>
+    <td>\(x_0=\) <output id="x0"></output></td>
+</tr>
+<tr>
+  <th>Initial speed \(v_{0,x}\) [\(\frac{px}{s}\)] </th>
+    <td>\(v_{0,x}=\) <output id="v0x"></output></td>
+</tr>
+<tr>
+  <th>Initial acceleration \(a_{0,x}\) [\(\frac{px}{s^2}\)]</th>
+    <td>\(a_{0,x}=\) <output id="a0x"></output></td>
+</tr>
+</table>
+
+<table style="display: inline-block;">
+<caption>Initial conditions (\(y\) axis)</caption>
+<tr>
+  <th>Initial position \(y_0\) [px] </th>
+    <td>\(y_0=\) <output id="y0"></output></td>
+</tr>
+<tr>
+  <th>Initial speed \(v_{0,y}\) [\(\frac{px}{s}\)] </th>
+    <td>\(v_{0,y}=\) <output id="v0y"></output></td>
+</tr>
+<tr>
+  <th>Initial acceleration \(a_{0,y}\) [\(\frac{px}{s^2}\)]</th>
+    <td>\(a_{0,y}=\) <output id="a0y"></output></td>
+</tr>
+</table>
+  
+<br/>  
+
+
+
+  
   
 <p align="center" id="timer" style="color:black;"></p>  
   
 <p align="center">
-<canvas id="cnv1" width="500" height="270" style="border: 1px solid black;"></canvas>
+<canvas id="cnv1" width="400" height="400" style="border: 1px solid black;"></canvas>
 </p>
   
 <p align="center" id="buttons"><input type="button" class="button" name="play" value="Play" onclick="play()">
@@ -33,7 +125,7 @@ Hi
 </p>  
   
   
-  
+ 
   
   
   
