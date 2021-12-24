@@ -1,5 +1,7 @@
 "use strict";
 
+var tl = 100;
+
 var PI = Math.PI;
 var latitude = PI/4; /// latitude from -PI/2 to PI/2
 var omegaE = 0.00007*1000; /// this is constant - the speed of the Earth's rotation
@@ -26,7 +28,7 @@ function init(){
   scale = 5;
   document.getElementById("timer").innerHTML = "t = 0.00s";
   
-  stopped = 0;
+  stopped = 1;
   
   C1r = 40;
   C1i = 0;
@@ -39,12 +41,22 @@ function init(){
   update();
   
   time = 0;
+  drawaxes();
   draw();
   time = 0;
   document.getElementById("timer").innerHTML = "t = "+time.toPrecision(3)+" s";
 }
 
 function update(){
+	// restart the animation
+  time = 0;
+  stop();
+  stopped = 0;
+  var cnv = document.getElementById('cnv1');
+  var ctx = cnv.getContext('2d');
+  ctx.clearRect(0,0,cnv.width,cnv.height);
+  
+  
 	//update the values of C1 and C2
   var c1r = document.getElementById("realc1").value;
   var c1i = document.getElementById("imaginaryc1").value;
@@ -69,8 +81,10 @@ function update(){
   document.getElementById("a0x").innerHTML = a0x.toPrecision(3);
   document.getElementById("a0y").innerHTML = a0y.toPrecision(3);
   
-  time -= dt*1e-3;
+  time = 0;
+  drawaxes();
   draw();
+  time = 0;
 }
 
 function drawaxes(){
@@ -92,7 +106,7 @@ function drawaxes(){
 }
 
 let id = null;
-var stopped = 0;
+var stopped;
 
 function stop(){
   stopped = 1;
@@ -100,18 +114,69 @@ function stop(){
 }
 
 function play(){
-  if(stopped == 0 || (stopped == 1 && time > 10)) time = 0;
+	if(stopped){
+  	if(time >= tl){
+    	time = 0;
+      stop();
+      stopped = 0;
+      var cnv = document.getElementById('cnv1');
+  		var ctx = cnv.getContext('2d');
+  		ctx.clearRect(0,0,cnv.width,cnv.height);
+    	time = 0;
+   	 	drawaxes();
+      drawaxes();
+   	 	draw();
+    	time = 0;
+    	window.clearInterval(id);
+    	id = window.setInterval(draw,dt);
+    }
+    else{
+    	stopped = 0;
+    	window.clearInterval(id);
+  		id = window.setInterval(draw,dt);
+     }
+  }
+  else{
+  	var cnv = document.getElementById('cnv1');
+  	var ctx = cnv.getContext('2d');
+  	ctx.clearRect(0,0,cnv.width,cnv.height);
+    time = 0;
+    drawaxes();
+    drawaxes();
+    draw();
+    time = 0;
+    window.clearInterval(id);
+    id = window.setInterval(draw,dt);
+  }
+
+  /*if(stopped == 0 || (stopped == 1 && time > 20)) time = 0;
+  var wasstopped = stopped;
   stopped = 0;
+  
+  var cnv = document.getElementById('cnv1');
+  var ctx = cnv.getContext('2d');
+  ctx.clearRect(0,0,cnv.width,cnv.height);
+  drawaxes();
+  draw();
+ 	if(wasstopped) time = 0;
  
   window.clearInterval(id);
-  id = window.setInterval(draw,dt);
+  id = window.setInterval(draw,dt);*/
+}
+
+function xnow(now){
+	return parseFloat(C1r)*Math.cos(gamma1*now)-parseFloat(C1i)*Math.sin(gamma1*now)+
+  parseFloat(C2r)*Math.cos(gamma2*now)-parseFloat(C2i)*Math.sin(gamma2*now);
+}
+function ynow(now){
+	return parseFloat(C1r)*Math.sin(gamma1*now)+parseFloat(C1i)*Math.cos(gamma1*now)+
+  parseFloat(C2r)*Math.sin(gamma2*now)+parseFloat(C2i)*Math.cos(gamma2*now);
 }
 
 function draw(){
   var cnv = document.getElementById('cnv1');
   var ctx = cnv.getContext('2d');
-  ctx.clearRect(0,0,cnv.width,cnv.height);
-  drawaxes();
+  //ctx.clearRect(0,0,cnv.width,cnv.height);
   
   /*ctx.beginPath();
   var dx = 0.01;
@@ -126,27 +191,34 @@ function draw(){
   }
   ctx.stroke();*/
  
-  var xval = parseFloat(C1r)*Math.cos(gamma1*time)-parseFloat(C1i)*Math.sin(gamma1*time)+
-  parseFloat(C2r)*Math.cos(gamma2*time)-parseFloat(C2i)*Math.sin(gamma2*time);
-  var yval = parseFloat(C1r)*Math.sin(gamma1*time)+parseFloat(C1i)*Math.cos(gamma1*time)+
-  parseFloat(C2r)*Math.sin(gamma2*time)+parseFloat(C2i)*Math.cos(gamma2*time);
+  var xval = xnow(time);
+  var yval = ynow(time);
   /*ctx.fillStyle = 'red';
-  ctx.fillRect(cnv.width/2+xval,cnv.height/2-yval,4,4);*/
-  ctx.beginPath();
+  ctx.fillRect(cnv.width/2+xval,cnv.height/2-yval,4,4);*/ 
+  /*ctx.beginPath();
   ctx.fillStyle = 'blue';
 	ctx.arc(cnv.width/2+xval,cnv.height/2-yval,5,0,2*PI);
-	ctx.fill();
+	ctx.fill();*/
   ctx.beginPath();
   ctx.fillStyle = 'red';
-  ctx.arc(cnv.width/2+xval,cnv.height/2-yval,3,0,2*PI);
+  ctx.arc(cnv.width/2+xval,cnv.height/2-yval,2,0,2*PI);
   ctx.fill();
 
-  
+  /*if(time > 0){
+  	var xprev = xnow(time-dt*1e-3),yprev = ynow(time-dt*1e-3);
+    ctx.beginPath();
+    ctx.strokeStyle = 'yellow';
+    ctx.lineWidth = 5;
+    ctx.moveTo(cnv.width/2+xval,cnv.height/2-yval);
+    ctx.lineTo(cnv.width/2+xprev,cnv.height/2-yprev);
+    ctx.stroke();
+  }*/
   
   time += dt*1e-3;
   document.getElementById("timer").innerHTML = "t = "+time.toPrecision(3)+" s";
   
-  if(time > 20){
+  if(time > tl){
+  	stopped = 1;
     window.clearInterval(id);
     return;
   }
