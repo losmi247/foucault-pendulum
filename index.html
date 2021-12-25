@@ -3,6 +3,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
+<head>
+    <style>
+        canvas {
+            background-color: white;
+        }
+    </style>
+</head>
   
 <head>
 <title>Foucault pendulum</title>
@@ -49,7 +57,7 @@ The Animation
 </h2>
 
 <p>
-The following table allows you to tune the values of \(C_1\) and \(C_2\) to get the desired pattern that the pendulum traces in the box below. For a complex number \(z \in \mathbf{C}\), values \(\Re(z)\) and \(\Im(z)\) denote its real and imaginary parts respectively. The initial conditions that follow from each choice of the two constants are displayed in the table below the ones for \(C_1\) and \(C_2\).
+The following two tables allow you to tune the values of \(C_1\) and \(C_2\) to get the desired pattern that the pendulum traces in the box below. For a complex number \(z \in \mathbf{C}\), values \(\Re(z)\) and \(\Im(z)\) denote its real and imaginary parts respectively. The initial conditions that follow from each choice of the two constants are displayed in the table below the ones for \(C_1\) and \(C_2\).
 </p>
 
 
@@ -59,11 +67,11 @@ The following table allows you to tune the values of \(C_1\) and \(C_2\) to get 
 <table style="display: inline-block;">
 <caption>Value of \(C_1\)</caption>
 <tr>
-  <th>\( \Re(C_1) \) [px]</th>
+  <th>\( \Re(C_1) \) [\(m\)]</th>
     <td>\(\Re(C_1) = \) <input type="number" id = "realc1"  name = "rec1" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
 </tr>
 <tr> 
-  <th>\( \Im(C_1) \) [px]</th>
+  <th>\( \Im(C_1) \) [\(m\)]</th>
     <td>\(\Im(C_1) = \) <input type="number" id = "imaginaryc1"  name = "imc1" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
 </tr>
 </table>
@@ -71,11 +79,11 @@ The following table allows you to tune the values of \(C_1\) and \(C_2\) to get 
 <table style="display: inline-block;">
 <caption>Value of \(C_2\)</caption>
 <tr>
-  <th>\( \Re(C_2) \) [px]</th>
+  <th>\( \Re(C_2) \) [\(m\)]</th>
     <td>\(\Re(C_2) = \) <input type="number" id = "realc2"  name = "rec2" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
 </tr>
 <tr> 
-  <th>\( \Im(C_2) \) [px]</th>
+  <th>\( \Im(C_2) \) [\(m\)]</th>
     <td>\(\Im(C_2) = \) <input type="number" id = "imaginaryc2"  name = "imc2" step = "0.1" onchange = "update()" style="width: 70px;" > </td>
 </tr>
 </table>
@@ -83,15 +91,15 @@ The following table allows you to tune the values of \(C_1\) and \(C_2\) to get 
 <table style="display: inline-block;">
 <caption>Initial conditions (\(x\) axis)</caption>
 <tr>
-  <th>Initial position \(x_0\) [px] </th>
+  <th>Initial position \(x_0\) [\(m\)] </th>
     <td>\(x_0=\) <output id="x0"></output></td>
 </tr>
 <tr>
-  <th>Initial speed \(v_{0,x}\) [\(\frac{px}{s}\)] </th>
+  <th>Initial speed \(v_{0,x}\) [\(\frac{m}{s}\)] </th>
     <td>\(v_{0,x}=\) <output id="v0x"></output></td>
 </tr>
 <tr>
-  <th>Initial acceleration \(a_{0,x}\) [\(\frac{px}{s^2}\)]</th>
+  <th>Initial acceleration \(a_{0,x}\) [\(\frac{m}{s^2}\)]</th>
     <td>\(a_{0,x}=\) <output id="a0x"></output></td>
 </tr>
 </table>
@@ -99,39 +107,78 @@ The following table allows you to tune the values of \(C_1\) and \(C_2\) to get 
 <table style="display: inline-block;">
 <caption>Initial conditions (\(y\) axis)</caption>
 <tr>
-  <th>Initial position \(y_0\) [px] </th>
+  <th>Initial position \(y_0\) [\(m\)] </th>
     <td>\(y_0=\) <output id="y0"></output></td>
 </tr>
 <tr>
-  <th>Initial speed \(v_{0,y}\) [\(\frac{px}{s}\)] </th>
+  <th>Initial speed \(v_{0,y}\) [\(\frac{m}{s}\)] </th>
     <td>\(v_{0,y}=\) <output id="v0y"></output></td>
 </tr>
 <tr>
-  <th>Initial acceleration \(a_{0,y}\) [\(\frac{px}{s^2}\)]</th>
+  <th>Initial acceleration \(a_{0,y}\) [\(\frac{m}{s^2}\)]</th>
     <td>\(a_{0,y}=\) <output id="a0y"></output></td>
 </tr>
 </table>
+
+<p>
+The first of the next two tables show a couple of relevant quantities related to the effect, which are fixed. The second table allows you to change the latitude of the pendulum's location on the planet and it should be set between \(-\frac{\pi}{2}\) and \(\frac{\pi}{2}\). You can also change the factor \(K\), which makes the Earth rotate at angular speed \(K*\omega_E\) instead of \(\omega_E\) and thus makes the effect more visible. For the best performance, keep \(K\) between \(10\) and \(1000\).  
+</p>
+
+
+<table style="display: inline-block;">
+<caption>Fixed quantities</caption>
+<tr>
+  <th>Angular speed of the Earth's rotation around its axis \(\omega_E\) [\(\frac{rad}{s}\)]</th>
+    <td>\(\omega_E=\) <output id="omegaearth"></output></td>
+</tr>
+<tr>
+  <th>Length of the pendulum's cable [\(m\)]</th>
+    <td>\(l=\) <output id="length"></output></td>
+</tr>
+<tr>
+  <th>Gravitational acceleration constant [\(\frac{m}{s^2}\)]</th>
+    <td>\(g=\) <output id="gravity"></output></td>
+</tr>
+<tr>
+  <th>Pendulum's own angular frequency of oscillation [\(\frac{rad}{s}\)]</th>
+    <td>\(\omega_0=\) <output id="ownfrequency"></output></td>
+</tr>
+</table>
+
+<table style="display: inline-block;">
+<caption>Other quantities</caption>
+<tr>
+  <th>Latitude [\(^{\circ}\)]</th>
+  <td>\(\phi=\) <input type="number" id = "lat"  name = "latitude" min = "-1.57079632679" max = "1.57079632679" onchange = "update()" step = "0.1" style="width: 70px;" > </td>
+</tr>
+<tr>
+  <th>Speeding up the Earth's rotation []</th>
+  <td>\(K=\) <input type="number" id = "const"  name = "constfac" min = "500" max = "10000" onchange = "update()" step = "1" style="width: 70px;" > </td>
+</tr>
+</table>
+
   
 <br/>  
 
 
-
+<p>
+The animation will run for at most \(100\) seconds.
+</p>
   
   
 <p align="center" id="timer" style="color:black;"></p>  
   
 <p align="center">
-<canvas id="cnv1" width="400" height="400" style="border: 1px solid black;"></canvas>
+<canvas id="cnv1" width="500" height="500" style="border: 1px solid black;"></canvas>
 </p>
   
-<p align="center" id="buttons"><input type="button" class="button" name="play" value="Play" onclick="play()">
-<input type = "button" class = "button" name = "stop" value = "Stop" onclick = "stop()">
-</p>  
+<p align="center" id="buttons">
+<button type="button" class="fill" name = "play" value = "play" onclick = "play()">Play</button>
+<button type="button" class="fill" name = "stop" value = "stop" onclick = "stop()">Stop</button>
+</p>
   
-  
- 
-  
-  
+The dimensions of the box are \(500 \times 500\) pixels and \(1\) pixel corresponds to \(1\) meter in real life.
+
   
   
   
