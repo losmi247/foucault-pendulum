@@ -54,7 +54,7 @@ function init(){
   document.getElementById("realc2").value = C2r;
   document.getElementById("imaginaryc2").value = C2i;
   latitude = PI/4;
-  document.getElementById("lat").value = latitude;
+  document.getElementById("lat").value = (latitude/PI)*180;
   constantfactor = 1000;
   document.getElementById("const").value = constantfactor;
   update();
@@ -85,8 +85,8 @@ function update(){
   C1i = c1i;
  	C2r = c2r;
   C2i = c2i;
-  var lat1 = document.getElementById("lat").value;
-  latitude = lat1;
+  var lat1deg = document.getElementById("lat").value;
+  latitude = (lat1deg/180)*PI;
   var con1 = document.getElementById("const").value;
   constantfactor = con1;
   
@@ -279,3 +279,4 @@ function draw(){
     return;
   }
 }
+
