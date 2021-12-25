@@ -1,17 +1,16 @@
 "use strict";
 
-var tl = 100;
+var tl;
+var PI;
+var latitude;
+var constantfactor;
+var omegaE;
+var omega;
+var length;
+var g;
+var omega0;
 
-var PI = Math.PI;
-var latitude = PI/4; /// latitude from -PI/2 to PI/2
-var omegaE = 0.00007*1000; /// this is constant - the speed of the Earth's rotation
-var omega = omegaE*Math.sin(latitude); /// depends on the latitude
-var length = 60; /// the length ofthe cable
-var g = 9.81; /// the acceleration due to gravity
-var omega0 = Math.sqrt(g/length); /// the pendulum's own frequency
-var gamma1 = -omega+Math.sqrt(omega*omega+omega0*omega0); /// gamma1 / i
-var gamma2 = -omega-Math.sqrt(omega*omega+omega0*omega0); /// gamma2 / i
-/// maybe add a table to tune the latitude ?, or even for the speed of earth's rotation
+var gamma1,gamma2;
 
 var stopped;
 
@@ -30,6 +29,22 @@ function init(){
   
   stopped = 1;
   
+  
+  
+  tl = 100;
+  PI = Math.PI;
+  latitude = PI/4; /// latitude from -PI/2 to PI/2
+  constantfactor = 1000;
+  omegaE = 0.00007; /// this is constant - the speed of the Earth's rotation
+  omega = (constantfactor*omegaE)*Math.sin(latitude); /// depends on the latitude
+  length = 60; /// the length of the cable
+  g = 9.81; /// the acceleration due to gravity
+  omega0 = Math.sqrt(g/length); /// the pendulum's own frequency
+  gamma1 = -omega+Math.sqrt(omega*omega+omega0*omega0); /// gamma1 / i
+  gamma2 = -omega-Math.sqrt(omega*omega+omega0*omega0); /// gamma2 / i
+  
+  
+  
   C1r = 40;
   C1i = 0;
   C2r = 40;
@@ -38,6 +53,10 @@ function init(){
   document.getElementById("imaginaryc1").value = C1i;
   document.getElementById("realc2").value = C2r;
   document.getElementById("imaginaryc2").value = C2i;
+  latitude = PI/4;
+  document.getElementById("lat").value = latitude;
+  constantfactor = 1000;
+  document.getElementById("const").value = constantfactor;
   update();
   
   time = 0;
@@ -51,7 +70,7 @@ function update(){
 	// restart the animation
   time = 0;
   stop();
-  stopped = 0;
+  stopped = /*0*/1;
   var cnv = document.getElementById('cnv1');
   var ctx = cnv.getContext('2d');
   ctx.clearRect(0,0,cnv.width,cnv.height);
@@ -66,6 +85,23 @@ function update(){
   C1i = c1i;
  	C2r = c2r;
   C2i = c2i;
+  var lat1 = document.getElementById("lat").value;
+  latitude = lat1;
+  var con1 = document.getElementById("const").value;
+  constantfactor = con1;
+  
+  ///update the fixed values
+  document.getElementById("omegaearth").innerHTML = omegaE.toPrecision(3);
+  document.getElementById("length").innerHTML = length.toPrecision(3);
+  document.getElementById("gravity").innerHTML = g.toPrecision(3);
+  document.getElementById("ownfrequency").innerHTML = omega0.toPrecision(3);
+  
+  var omeganew = (constantfactor*omegaE)*Math.sin(latitude); /// depends on the latitude
+  omega = omeganew;
+	var gamma1new = -omega+Math.sqrt(omega*omega+omega0*omega0); /// gamma1 / i
+	var gamma2new = -omega-Math.sqrt(omega*omega+omega0*omega0); /// gamma2 / i
+  gamma1 = gamma1new;
+  gamma2 = gamma2new;
   
   //update the initial conditions: positions, speeds and accelerations 
   xp = parseFloat(C1r)+parseFloat(C2r);
@@ -81,10 +117,13 @@ function update(){
   document.getElementById("a0x").innerHTML = a0x.toPrecision(3);
   document.getElementById("a0y").innerHTML = a0y.toPrecision(3);
   
+  
   time = 0;
+  drawaxes();
   drawaxes();
   draw();
   time = 0;
+  document.getElementById("timer").innerHTML = "t = "+time.toPrecision(3)+" s";
 }
 
 function drawaxes(){
@@ -103,6 +142,17 @@ function drawaxes(){
   ctx.moveTo(w/2,0);
   ctx.lineTo(w/2,h);
   ctx.stroke();
+  
+  /// the labels
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.strokeText("X",480,265);
+  
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.strokeText("Y",260,20);
 }
 
 let id = null;
@@ -203,8 +253,13 @@ function draw(){
   ctx.fillStyle = 'red';
   ctx.arc(cnv.width/2+xval,cnv.height/2-yval,2,0,2*PI);
   ctx.fill();
+  
+  /*if(!stopped){
+  	ctx.clearRect(cnv.width/2+xval-3,cnv.height/2-yval-3,6,6,cnv.height);
+  	drawaxes();  
+  }
 
-  /*if(time > 0){
+  if(time > 0){
   	var xprev = xnow(time-dt*1e-3),yprev = ynow(time-dt*1e-3);
     ctx.beginPath();
     ctx.strokeStyle = 'yellow';
@@ -213,6 +268,7 @@ function draw(){
     ctx.lineTo(cnv.width/2+xprev,cnv.height/2-yprev);
     ctx.stroke();
   }*/
+  
   
   time += dt*1e-3;
   document.getElementById("timer").innerHTML = "t = "+time.toPrecision(3)+" s";
