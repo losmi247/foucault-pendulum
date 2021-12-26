@@ -251,7 +251,7 @@ function draw(){
 	ctx.fill();*/
   ctx.beginPath();
   ctx.fillStyle = 'red';
-  ctx.arc(cnv.width/2+xval,cnv.height/2-yval,2,0,2*PI);
+  ctx.arc(cnv.width/2+xval,cnv.height/2-yval,1,0,2*PI);
   ctx.fill();
   
   /*if(!stopped){
