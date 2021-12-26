@@ -35,19 +35,20 @@ function init(){
   PI = Math.PI;
   latitude = PI/4; /// latitude from -PI/2 to PI/2
   constantfactor = 1000;
-  omegaE = 0.00007; /// this is constant - the speed of the Earth's rotation
+  omegaE = /*0.00007*/ 0.0001; /// this is constant - the speed of the Earth's rotation
   omega = (constantfactor*omegaE)*Math.sin(latitude); /// depends on the latitude
-  length = 60; /// the length of the cable
-  g = 9.81; /// the acceleration due to gravity
+  length = /*60*/ 40; /// the length of the cable
+  g = /*9.81*/ 10; /// the acceleration due to gravity
   omega0 = Math.sqrt(g/length); /// the pendulum's own frequency
+  omega0 = 0.5;
   gamma1 = -omega+Math.sqrt(omega*omega+omega0*omega0); /// gamma1 / i
   gamma2 = -omega-Math.sqrt(omega*omega+omega0*omega0); /// gamma2 / i
   
   
   
-  C1r = 40;
+  C1r = 100;
   C1i = 0;
-  C2r = 40;
+  C2r = 100;
   C2i = 0;
   document.getElementById("realc1").value = C1r;
   document.getElementById("imaginaryc1").value = C1i;
@@ -279,4 +280,3 @@ function draw(){
     return;
   }
 }
-
